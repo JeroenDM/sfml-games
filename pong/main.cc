@@ -4,6 +4,7 @@
 
 #include "bat.h"
 #include "hud.h"
+#include "ball.h"
 #include "input_util.h"
 
 using namespace sf;
@@ -49,6 +50,7 @@ int main()
 
     Bat bat(1920.0f / 2, 1080.0f - 20);
     Hud hud("../fonts/positive_system.otf");
+    Ball ball(1920.0f / 2, 0);
 
     Clock clock;
 
@@ -60,14 +62,51 @@ int main()
         /* Update */
         Time dt = clock.restart();
         bat.update(dt);
+        ball.update(dt);
         std::stringstream hud_text;
         hud_text << "Score " << score << "    Lives " << lives;
         hud.setString(hud_text.str());
+
+        // handle ball hitting the bottom
+        if (ball.getPosition().top > window.getSize().y)
+        {
+            ball.reboundBottom();
+
+            lives--;
+
+            if (lives < 1)
+            {
+                score = 0;
+                lives = 3;
+                ball.resetSpeed();
+            }
+        }
+
+        // handle the ball hitting top
+        if (ball.getPosition().top < 0)
+        {
+            ball.reboundBatOrTop();
+            score++;
+        }
+
+        // handle ball hitting sides
+        if (ball.getPosition().left < 0 || ball.getPosition().left + ball.getPosition().width > window.getSize().x)
+        {
+            ball.reboundSides();
+        }
+
+        // handle ball hitting bat
+        if (ball.getPosition().intersects(bat.getPosition()))
+        {
+            ball.reboundBatOrTop();
+            bat.playHitSound();
+        }
 
         /* Draw */
         window.clear();
         window.draw(hud.getText());
         window.draw(bat.getShape());
+        window.draw(ball.getShape());
         window.display();
     }
 

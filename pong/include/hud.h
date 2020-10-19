@@ -13,4 +13,7 @@ public:
     Hud(const std::string &font_file_path);
     void setString(const std::string& str);
     sf::Text getText();
+
+    void showGameOver();
+    void showScore();
 };

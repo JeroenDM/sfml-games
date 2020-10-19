@@ -9,7 +9,7 @@ set(CMAKE_MODULE_PATH "/usr/share/SFML/cmake/Modules" ${CMAKE_MODULE_PATH})
 find_package(SFML REQUIRED network audio graphics window system)
 include_directories(${SFML_INCLUDE_DIR} include)
 
-add_library(game src/bat.cc src/hud.cc)
+add_library(game src/bat.cc src/hud.cc src/ball.cc)
 
 
 add_executable(main main.cc)

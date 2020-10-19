@@ -1,12 +1,15 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class Bat
 {
 private:
     sf::Vector2f position_;
     sf::RectangleShape shape_;
+    sf::SoundBuffer sound_buffer_;
+    sf::Sound sound_;
 
     float speed_{1000.0f};
     bool moving_right_{false};
@@ -22,6 +25,7 @@ private:
     void moveRight();
     void stopLeft();
     void stopRight();
+    void playHitSound();
 
     void update(sf::Time dt);
 };

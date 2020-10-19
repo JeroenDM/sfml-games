@@ -1,12 +1,12 @@
 #include "bat.h"
 
-Bat::Bat(float start_x, float start_y)
+Bat::Bat(float start_x, float start_y) : position_(start_x, start_y)
 {
-    position_.x = start_x;
-    position_.y = start_y;
-
-    shape_.setSize(sf::Vector2f(50, 5));
+    shape_.setSize(sf::Vector2f(200, 20));
     shape_.setPosition(position_);
+
+    sound_buffer_.loadFromFile("../sound/hit.wav");
+    sound_.setBuffer(sound_buffer_);
 }
 
 void Bat::update(sf::Time dt)
@@ -51,4 +51,9 @@ void Bat::stopLeft()
 void Bat::stopRight()
 {
     moving_right_ = false;
+}
+
+void Bat::playHitSound()
+{
+    sound_.play();
 }
